@@ -11,7 +11,7 @@ Boot.prototype = {
 
     create: function () {
         this.game.input.maxPointers = 1;
-
+        this.game.stage.backgroundColor = "#ffffff";
         if (this.game.device.desktop) {
             this.game.stage.scale.pageAlignHorizontally = true;
         } else {

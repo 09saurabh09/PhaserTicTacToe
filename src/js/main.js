@@ -6,6 +6,10 @@ window.Utils = require('./utils');
 window.playerState = {
     currentLevel: 'Game'
 };
+window.globalUser = {};
+globalUser.settings = {
+    grids:5
+};
 
 game.state.add('Boot', require('./states/boot'));
 game.state.add('Splash', require('./states/splash'));
