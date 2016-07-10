@@ -20,7 +20,7 @@ Boot.prototype = {
             this.game.scale.minHeight = 260;
             this.game.scale.maxWidth = 640;
             this.game.scale.maxHeight = 480;
-            this.game.scale.forceLandscape = true;
+            //this.game.scale.forceLandscape = true;
             this.game.scale.pageAlignHorizontally = true;
             this.game.scale.updateLayout(true);
         }
