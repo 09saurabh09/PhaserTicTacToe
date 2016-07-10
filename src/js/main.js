@@ -9,7 +9,7 @@ window.playerState = {
 };
 window.globalUser = {};
 globalUser.settings = {
-    grids:4
+    grids:3
 };
 
 game.state.add('Boot', require('./states/boot'));
