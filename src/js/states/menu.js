@@ -1,3 +1,4 @@
+var AI = require("../AI");
 var Menu = function () {
     this.text = null;
 };
@@ -21,6 +22,7 @@ Menu.prototype = {
     },
 
     onDown: function () {
+        window.globalUser.AI = new AI("master");
         this.game.state.start(playerState.currentLevel);
     }
 };
