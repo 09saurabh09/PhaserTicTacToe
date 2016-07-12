@@ -11,6 +11,7 @@ window.globalUser = {};
 globalUser.settings = {
     grids:3
 };
+window.times = 0;
 
 game.state.add('Boot', require('./states/boot'));
 game.state.add('Splash', require('./states/splash'));

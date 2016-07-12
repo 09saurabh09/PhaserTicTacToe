@@ -41,7 +41,7 @@ State.prototype = {
         for (x = 0; x < this.boardState.length; x++) {
             var row = this.boardState[x];
             if (row[0] != 0 && row.isSingleValued()) {
-                this.result = this.turn ? "X" : "O";
+                this.result = this.turn ? "O" : "X";
                 return true;
             }
         }
@@ -52,7 +52,7 @@ State.prototype = {
                 return value[x];
             });
             if (col[0] != 0 && col.isSingleValued()) {
-                this.result = this.turn ? "X" : "O";
+                this.result = this.turn ? "O" : "X";
                 return true;
             }
         }
@@ -71,7 +71,7 @@ State.prototype = {
         for (x = 0; x < diagonals.length; x++) {
             var diagonal = diagonals[x];
             if (diagonal[0] != 0 && diagonal.isSingleValued()) {
-                this.result = this.turn ? "X" : "O";
+                this.result = this.turn ? "O" : "X";
                 return true;
             }
         }
@@ -103,6 +103,7 @@ var Game = {
         this.result = "running";
         this.difficultyLevel = null;
         this.currentState = new State();
+        globalUser.AI.plays(this);
     },
 
     create: function () {
@@ -160,6 +161,9 @@ var Game = {
                     this.currentState.lastMove.y = y;
 
                     if(this.currentState.boardState[y][x] == 0) {
+                        this.renderPiece(x,y, true);
+                        this.currentState.turn = !this.currentState.turn;
+                        this.currentState.boardState[y][x] = "X";
                         this.advanceToState(this.currentState);
                     }
 
@@ -168,34 +172,35 @@ var Game = {
         }
     },
 
-    advanceToState: function(state) {
-        var xCordinate = state.lastMove.x * this.sectionSize;
-        var yCordinate = state.lastMove.y * this.sectionSize;
-        if (state.turn) {
+    renderPiece: function(x, y, turn) {
+        var xCordinate = x * this.sectionSize;
+        var yCordinate = y * this.sectionSize;
+        if(turn) {
             this.drawX(xCordinate, yCordinate);
-            this.currentState.boardState[state.lastMove.y][state.lastMove.x] = "X";
-            //this.currentState.turn = false;
+        } else {
+            this.drawO(xCordinate, yCordinate);
+        }
+    },
+
+    advanceToState: function(state) {
+        this.currentState = state;
+        if (state.turn) {
+            if(this.currentState.isStateTerminal()) {
+                state.status = "finished";
+                //this.game.state.start("GameOver");
+            }
+        } else{
             if(this.currentState.isStateTerminal()) {
                 state.status = "finished";
                 //this.game.state.start("GameOver");
                 return;
             }
             if(globalUser.AI) {
-                globalUser.AI.plays(this);
                 globalUser.AI.makeMove();
             }
-        } else{
-            this.drawO(xCordinate, yCordinate);
-            this.currentState.boardState[state.lastMove.y][state.lastMove.x] = "O";
-            if(this.currentState.isStateTerminal()) {
-                state.status = "finished";
-                //this.game.state.start("GameOver");
-                return;
-            }
-            this.currentState.oMovesCount += 1;
-            this.currentState.turn = !this.currentState.turn;
+            state.oMovesCount += 1;
         }
-        state.turn = !state.turn;
+        //state.turn = !state.turn;
     },
 
     drawO: function(x, y) {

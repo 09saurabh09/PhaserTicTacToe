@@ -87,6 +87,7 @@ var AI = function(level) {
      * @returns [Number]: the minimax value of the state
      */
     function minimaxValue(state) {
+        times = times + 1;
         if(state.isStateTerminal()) {
             //a terminal game state is the base case
             return game.score(state);
@@ -190,7 +191,7 @@ var AI = function(level) {
         var next = chosenAction.applyTo(game.currentState);
 
         game.advanceToState(next);
-    };
+    }
 
     /*
      * private function: make the ai player take a master move,
@@ -199,7 +200,6 @@ var AI = function(level) {
      */
     function takeAMasterMove() {
         var available = game.currentState.emptyCells();
-
         //enumerate and calculate the score for each avaialable actions to the ai player
         var availableActions = available.map(function(pos) {
             var action =  new AIAction(pos); //create the action object
@@ -207,7 +207,6 @@ var AI = function(level) {
             action.minimaxVal = minimaxValue(next); //calculate and set the action's minmax value
             return action;
         });
-        console.log(availableActions);
         //sort the enumerated actions list by score
         //if(turn === "X")
         ////X maximizes --> sort the actions in a descending manner to have the action with maximum minimax at first
@@ -219,8 +218,8 @@ var AI = function(level) {
 
         //take the first action as it's the optimal
         var chosenAction = availableActions[0];
+        game.renderPiece(chosenAction.movePosition[1], chosenAction.movePosition[0], false);
         var next = chosenAction.applyTo(game.currentState);
-
         game.advanceToState(next);
     }
 
