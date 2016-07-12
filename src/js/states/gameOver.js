@@ -13,9 +13,9 @@ GameOver.prototype = {
         var x = this.game.width / 2;
         var y = this.game.height / 2;
 
-        var style = {font: "65px Arial", fill: "#dddddd", align: "center"};
+        var style = {font: "25px Arial", fill: "#dddddd", align: "center"};
 
-        this.text = this.add.text(x - 300, y - 200, "GameOver", style);
+        this.text = this.add.text(x - 300, 0, "GameOver, "+globalUser.result+" click to play again", style);
 
         this.input.onDown.add(this.onDown, this);
     },

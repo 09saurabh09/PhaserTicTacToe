@@ -77,7 +77,10 @@ State.prototype = {
         }
 
         // Check Draw
-        return this.emptyCells().length == 0
+        if(this.emptyCells().length == 0) {
+            this.result = "Match Drawn";
+            return true;
+        }
     },
 
     emptyCells: function() {
@@ -184,17 +187,13 @@ var Game = {
 
     advanceToState: function(state) {
         this.currentState = state;
-        if (state.turn) {
-            if(this.currentState.isStateTerminal()) {
-                state.status = "finished";
-                //this.game.state.start("GameOver");
-            }
-        } else{
-            if(this.currentState.isStateTerminal()) {
-                state.status = "finished";
-                //this.game.state.start("GameOver");
-                return;
-            }
+        if(this.currentState.isStateTerminal()) {
+            state.status = "finished";
+            globalUser.result = state.result == "X" ? "You won" : (state.result == "O" ? "You Lose" : "Match Draw");
+            this.game.state.start("GameOver",  false, true);
+            return;
+        }
+        if (!state.turn) {
             if(globalUser.AI) {
                 globalUser.AI.makeMove();
             }
