@@ -5,7 +5,7 @@ var utils = require('../utils/utils');
 // Not state of phaser but game
 function State(oldState) {
     var i,j;
-    this.turn = true;
+    this.turn = Math.random > 0.5;
     this.boardState = [];
     this.oMovesCount = 0;
     this.lastMove = {};
@@ -106,13 +106,19 @@ var Game = {
         this.result = "running";
         this.difficultyLevel = null;
         this.currentState = new State();
+        this.messageOne = "";
+        this.messageTwo = "";
         globalUser.AI.plays(this);
     },
 
     create: function () {
-        var i,j;
+        var i, j;
         var graphics = this.game.add.graphics(config.graphicPadding, config.graphicPadding);
         this.graphics = graphics;
+        this.setTurnMessages();
+        var style = {font: "20px Arial", fill: "#66CDAA", align: "center"};
+
+        this.textMessage = this.add.text(200, 0, this.messageOne, style);
 
         // set a fill and line style
         graphics.lineStyle(config.gameBoundaryWidth, 0xdddddd);
@@ -131,6 +137,12 @@ var Game = {
         }
         this.sectionSize = gridDetails[1]/globalUser.settings.grids;
         this.input.onDown.add(this.addPlayingPiece, this);
+        if (!this.currentState.turn && globalUser.AI) {
+            this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){
+                globalUser.AI.makeMove();
+                this.currentState.oMovesCount += 1;
+            }, this);
+        }
 
     },
 
@@ -183,19 +195,23 @@ var Game = {
         } else {
             this.drawO(xCordinate, yCordinate);
         }
+        this.textMessage.text = this.textMessage.text == this.messageOne ? this.messageTwo :this.messageOne;
     },
 
     advanceToState: function(state) {
         this.currentState = state;
         if(this.currentState.isStateTerminal()) {
             state.status = "finished";
+            this.textMessage.text= "";
             globalUser.result = state.result == "X" ? "You won" : (state.result == "O" ? "You Lose" : "Match Draw");
             this.game.state.start("GameOver",  false, true);
             return;
         }
         if (!state.turn) {
             if(globalUser.AI) {
-                globalUser.AI.makeMove();
+                this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){
+                    globalUser.AI.makeMove();
+                }, this);
             }
             state.oMovesCount += 1;
         }
@@ -238,6 +254,23 @@ var Game = {
         else {
             //it's a draw
             return 0;
+        }
+    },
+
+    setTurnMessages: function() {
+        if(globalUser.AI) {
+            if(this.currentState.turn) {
+                this.messageOne = "Your turn, make your move";
+                this.messageTwo = "Please wait, AI is thinking";
+            } else {
+                this.messageTwo = "Your turn, make your move";
+                this.messageOne = "Please wait, AI is thinking";
+            }
+        } else if(globalUser.playingOverNetwork) {
+
+        } else {
+            this.messageOne = "Player one's turn";
+            this.messageTwo = "Player two's turn";
         }
     }
 };
