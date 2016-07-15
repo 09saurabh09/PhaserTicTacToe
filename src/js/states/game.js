@@ -5,7 +5,7 @@ var utils = require('../utils/utils');
 // Not state of phaser but game
 function State(oldState) {
     var i,j;
-    this.turn = Math.random > 0.5;
+    this.turn = Math.random() > 0.3;
     this.boardState = [];
     this.oMovesCount = 0;
     this.lastMove = {};
