@@ -11,11 +11,12 @@ html, body {
 }
 
 .game {
-    width: 640px;
-    height: 480px;
+    /*width: 90%;*/
     margin: 20px auto;
 }
 
 h1, h2, h3 {
     color: #dddddd;
 }
+
+canvas { margin: 0 auto; }

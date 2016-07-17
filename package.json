@@ -27,7 +27,8 @@
     "gulp-streamify": "*",
     "watchify": "*",
     "gulp-if": "*",
-    "vinyl-paths": "*"
+    "vinyl-paths": "*",
+    "jshint": "*"
   },
   "scripts": {
     "post-install": "node ./node_modules/bower/bin/bower install",

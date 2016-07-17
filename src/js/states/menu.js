@@ -11,10 +11,9 @@ Menu.prototype = {
         var x = this.game.width / 2;
         var y = this.game.height / 2;
 
-        var style = {font: "65px Arial", fill: "#dddddd", align: "center"};
-
-        this.text = this.add.text(x - 300, y - 200, "Press to Start", style);
-
+        var button = this.game.add.button(0, y, 'playButton', undefined, this);
+        button.x =  (this.game.width - button.width)/2;
+        button.height = button.width = 100;
         this.input.onDown.add(this.onDown, this);
     },
 
@@ -22,7 +21,7 @@ Menu.prototype = {
     },
 
     onDown: function () {
-        window.globalUser.AI = new AI("master");
+        window.globalUser.AI = new AI("blind");
         this.game.state.start(playerState.currentLevel);
     }
 };

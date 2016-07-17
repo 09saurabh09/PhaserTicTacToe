@@ -1,5 +1,5 @@
 "use strict";
-var config = require('./../config');
+var configObejct = require('./../config');
 var Utils = {
     containsObject: function (obj, list) {
         var i;
@@ -13,7 +13,8 @@ var Utils = {
     },
 
     gridSize: function(game) {
-        var gameWidth =  Math.min(game.width, game.height) - 2 * config.graphicPadding;
+        var config = configObejct.getInstance();
+        var gameWidth =  game.width - 2 * config.graphicPadding;
         var gridTotalWidth = gameWidth - (globalUser.settings.grids - 1) * config.gameBoundaryWidth;
         return [gridTotalWidth / globalUser.settings.grids, gameWidth];
     }

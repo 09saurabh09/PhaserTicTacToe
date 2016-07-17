@@ -141,7 +141,7 @@ var AI = function(level) {
         var action = new AIAction(randomCell);
 
         var next = action.applyTo(game.currentState);
-
+        game.renderPiece(action.movePosition[1], action.movePosition[0], false);
         game.advanceToState(next);
     }
 
@@ -217,7 +217,8 @@ var AI = function(level) {
 
 
         //take the first action as it's the optimal
-        var chosenAction = availableActions[0];
+        var filteredActions = availableActions.filter(function(action){ return action.minimaxVal == availableActions[0].minimaxVal});
+        var chosenAction = filteredActions[Math.floor(Math.random()*filteredActions.length)];
         game.renderPiece(chosenAction.movePosition[1], chosenAction.movePosition[0], false);
         var next = chosenAction.applyTo(game.currentState);
         game.advanceToState(next);

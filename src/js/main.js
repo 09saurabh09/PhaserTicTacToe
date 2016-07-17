@@ -1,6 +1,6 @@
 'use strict';
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'tictactoe-game');
+var game = new Phaser.Game(window.screen.availWidth, window.screen.availHeight, Phaser.AUTO, 'tictactoe-game');
 
 window.Utils = require('./utils/utils');
 require('./utils/prototype');

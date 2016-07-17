@@ -1,6 +1,7 @@
 var Player = require('../entities/player');
-var config = require('../config');
+var configObject = require('../config');
 var utils = require('../utils/utils');
+var config;
 
 // Not state of phaser but game
 function State(oldState) {
@@ -108,12 +109,14 @@ var Game = {
         this.currentState = new State();
         this.messageOne = "";
         this.messageTwo = "";
+        this.userInputEnabled = this.currentState.turn;
         globalUser.AI.plays(this);
+        config = configObject.getInstance();
     },
 
     create: function () {
         var i, j;
-        var graphics = this.game.add.graphics(config.graphicPadding, config.graphicPadding);
+        var graphics = this.game.add.graphics(config.graphicPadding, 100);
         this.graphics = graphics;
         this.setTurnMessages();
         var style = {font: "20px Arial", fill: "#66CDAA", align: "center"};
@@ -138,10 +141,7 @@ var Game = {
         this.sectionSize = gridDetails[1]/globalUser.settings.grids;
         this.input.onDown.add(this.addPlayingPiece, this);
         if (!this.currentState.turn && globalUser.AI) {
-            this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){
-                globalUser.AI.makeMove();
-                this.currentState.oMovesCount += 1;
-            }, this);
+            this.invokeAI();
         }
 
     },
@@ -159,7 +159,7 @@ var Game = {
         var sectionSize = this.sectionSize;
         var mouse = this.input.position;
         mouse.x = mouse.x - config.graphicPadding;
-        mouse.y = mouse.y - config.graphicPadding;
+        mouse.y = mouse.y - 100;
 
         for (var x = 0;x < globalUser.settings.grids;x++) {
             for (var y = 0;y < globalUser.settings.grids;y++) {
@@ -175,7 +175,7 @@ var Game = {
                     this.currentState.lastMove.x = x;
                     this.currentState.lastMove.y = y;
 
-                    if(this.currentState.boardState[y][x] == 0) {
+                    if(this.currentState.boardState[y][x] == 0 && this.userInputEnabled) {
                         this.renderPiece(x,y, true);
                         this.currentState.turn = !this.currentState.turn;
                         this.currentState.boardState[y][x] = "X";
@@ -194,6 +194,7 @@ var Game = {
             this.drawX(xCordinate, yCordinate);
         } else {
             this.drawO(xCordinate, yCordinate);
+            this.userInputEnabled = true; // Since AI will always be O
         }
         this.textMessage.text = this.textMessage.text == this.messageOne ? this.messageTwo :this.messageOne;
     },
@@ -209,11 +210,8 @@ var Game = {
         }
         if (!state.turn) {
             if(globalUser.AI) {
-                this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){
-                    globalUser.AI.makeMove();
-                }, this);
+                this.invokeAI();
             }
-            state.oMovesCount += 1;
         }
         //state.turn = !state.turn;
     },
@@ -272,6 +270,14 @@ var Game = {
             this.messageOne = "Player one's turn";
             this.messageTwo = "Player two's turn";
         }
+    },
+
+    invokeAI: function() {
+        this.userInputEnabled = false;
+        this.game.time.events.add(Phaser.Timer.SECOND * 1, function(){
+            globalUser.AI.makeMove();
+            this.currentState.oMovesCount += 1;
+        }, this);
     }
 };
 
