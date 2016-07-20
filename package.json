@@ -4,8 +4,6 @@
   "readme": "",
   "repository": "",
   "version": "0.0.0",
-  "readme": "",
-  "repository": "",
   "devDependencies": {
     "bower": "*",
     "gulp": "*",
@@ -33,5 +31,8 @@
     "post-install": "node ./node_modules/bower/bin/bower install",
     "start": "node ./node_modules/gulp/bin/gulp.js",
     "build": "node ./node_modules/gulp/bin/gulp.js build"
+  },
+  "dependencies": {
+    "jshint": "^2.9.2"
   }
 }
