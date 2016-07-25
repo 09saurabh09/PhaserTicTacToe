@@ -1,1 +1,2 @@
 # PhaserTicTacToe
+- deleted unnecessary files
