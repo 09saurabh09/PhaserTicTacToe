@@ -5,11 +5,11 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'tictactoe-game');
 window.Utils = require('./utils/utils');
 require('./utils/prototype');
 window.playerState = {
-    currentLevel: 'Game'
+  currentLevel: 'Game'
 };
 window.globalUser = {};
 globalUser.settings = {
-    grids:3
+  grids: 3
 };
 window.times = 0;
 

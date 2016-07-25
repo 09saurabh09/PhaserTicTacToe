@@ -2,37 +2,18 @@
   "name": "tictactoe",
   "description": "",
   "readme": "",
-  "repository": "",
-  "version": "0.0.0",
-  "devDependencies": {
-    "bower": "*",
-    "gulp": "*",
-    "gulp-util": "*",
-    "del": "*",
-    "gulp-concat": "*",
-    "gulp-download": "*",
-    "gulp-rename": "*",
-    "gulp-minify-css": "*",
-    "gulp-minify-html": "*",
-    "gulp-processhtml": "*",
-    "gulp-jshint": "*",
-    "gulp-uglify": "*",
-    "gulp-connect": "*",
-    "gulp-watch": "*",
-    "browserify": "*",
-    "tiny-lr": "*",
-    "vinyl-source-stream": "*",
-    "gulp-streamify": "*",
-    "watchify": "*",
-    "gulp-if": "*",
-    "vinyl-paths": "*"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/09saurabh09/PhaserTicTacToe.git"
   },
+  "version": "0.0.2",
   "scripts": {
-    "post-install": "node ./node_modules/bower/bin/bower install",
-    "start": "node ./node_modules/gulp/bin/gulp.js",
-    "build": "node ./node_modules/gulp/bin/gulp.js build"
+    "start": "node server.js"
   },
   "dependencies": {
-    "jshint": "^2.9.2"
+    "koa": "^1.2.1",
+    "phaser": "^2.6.1",
+    "webpack": "^1.13.1"
   }
 }
